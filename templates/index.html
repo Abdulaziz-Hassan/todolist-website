@@ -1,6 +1,5 @@
-{% extends "base.html" %}
+{% include "header.html" %}
 
-{% block content %}
      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
      <meta name="description" content="">
      <meta name="keywords" content="">
@@ -13,9 +12,6 @@
 
      <!-- MAIN CSS -->
      <link rel="stylesheet" href="static/css/templatemo-style.css">
-
-     <!--Custom CSS-->
-     <link rel="stylesheet" href="static/css/styles.css">
 <body>
 
      <!-- PRE LOADER -->
@@ -39,8 +35,8 @@
                          <div class="home-info">
                               <h1>Welcome!<br>Love to track your day?<br>Register Now or Log In to record your schedule.</h1>
                               <div class="btn-toolbar">
-                              <button type="button" class="btn btn-light btn-lg" id="slide_start_button">Register</button>
-                              <button type="button" class="btn btn-light btn-lg" id="slide_stop_button">Log In</button>
+                              <a type="button" class="btn btn-light btn-lg" href="{{ url_for('register') }}">Register</a>
+                              <a type="button" class="btn btn-light btn-lg" href="{{ url_for('login') }}">Log In</a>
                               </div>
                          </div>
                     </div>
@@ -58,4 +54,3 @@
      <script src="static/js/custom.js"></script>
 
 </body>
-{% endblock %}
