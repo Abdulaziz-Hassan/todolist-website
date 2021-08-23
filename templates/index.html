@@ -1,6 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="description" content="">
+     <meta name="keywords" content="">
+     <meta name="team" content="">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<h1>Hello World!</h1>
+     <link rel="stylesheet" href="static/css/bootstrap.min.css">
+     <link rel="stylesheet" href="static/css/vegas.min.css">
+     <link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+     <!-- MAIN CSS -->
+     <link rel="stylesheet" href="static/css/templatemo-style.css">
+
+     <!--Custom CSS-->
+     <link rel="stylesheet" href="static/css/styles.css">
+<body>
+
+     <!-- PRE LOADER -->
+     <section class="preloader">
+          <div class="spinner">
+
+               <span class="spinner-rotate"></span>
+          </div>
+     </section>
+
+
+
+
+     <!-- HOME -->
+     <section id="home">
+        <div class="overlay"></div>
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <div class="home-info">
+                              <h1>Welcome!<br>Love to track your day?<br>Register Now or Log In to record your schedule.</h1>
+                              <div class="btn-toolbar">
+                              <button type="button" class="btn btn-light btn-lg" id="slide_start_button">Register</button>
+                              <button type="button" class="btn btn-light btn-lg" id="slide_stop_button">Log In</button>
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+     <!-- SCRIPTS -->
+     <script src="static/js/jquery.js"></script>
+     <script src="static/js/bootstrap.min.js"></script>
+     <script src="static/js/vegas.min.js"></script>
+     <script src="static/js/countdown.js"></script>
+     <script src="static/js/init.js"></script>
+     <script src="static/js/custom.js"></script>
+
+</body>
 {% endblock %}
