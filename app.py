@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, abort, flash, request
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
+from flask_ckeditor import CKEditor
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import db
@@ -17,6 +18,7 @@ app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get("RECAPTCHA_PUBLIC_KEY")
 app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 
 Bootstrap(app)
+ckeditor = CKEditor(app)
 
 # Database Connection
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todolist.db"
@@ -91,10 +93,35 @@ def logout():
     return redirect(url_for("home"))
 
 
-@app.route("/dashboard", methods=["GET", "POST"])
+@app.route("/dashboard/")
 def dashboard():
+    return render_template("dashboard.html", current_user=current_user)
+
+
+@app.route("/add-item", methods=["GET", "POST"])
+@login_required
+def add_new_item():
     form = TODOItemForm()
-    return render_template("dashboard.html", form=form)
+    if form.validate_on_submit():
+        item_title = form.title.data
+        item_description = form.description.data
+        new_item = ToDoItem(
+            title=item_title,
+            description=item_description,
+            author=current_user
+        )
+        db.session.add(new_item)
+        db.session.commit()
+        return redirect(url_for("dashboard"))
+    return render_template("add-item.html", form=form, current_user=current_user)
+
+
+@app.route("/delete-item/<int:item_id>")
+def delete_item(item_id):
+    item_to_delete = ToDoItem.query.get(item_id)
+    db.session.delete(item_to_delete)
+    db.session.commit()
+    return redirect(url_for("dashboard"))
 
 
 if __name__ == '__main__':

@@ -1,89 +1,57 @@
 {% extends "bootstrap/base.html"  %}
-{% import "bootstrap/wtf.html" as wtf %}
+
 {% include "header.html" %}
 {% block content %}
+<link href="static/css/custom.css" rel="stylesheet">
 <section class="vh-100" style="background-color: #fff;">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-lg-9 col-xl-7">
-                <div class="card rounded-3">
-                    <div class="card-body p-4">
+    <div id="wrapper">
+        <div class="container-fluid py-5 h-200 w-200">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-9 col-xl-7">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
 
-                        <h4 class="text-center my-3 pb-3">Todo List</h4>
+                            <h2 class="text-center my-3 pb-3">Todo list</h2>
 
-                        <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
-
-                            <div class="col-12">
-                                <a class="btn btn-primary" data-target="#exampleModal" data-toggle="modal"
-                                   type="button">
-                                    Add New Todo Item
-                                </a>
-
-                                <!-- Modal -->
-                                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
-                                     id="exampleModal"
-                                     role="dialog" tabindex="-1">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2 class="modal-title" id="exampleModalLabel">Add Todo Item</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                {{ wtf.quick_form(form, button_map={"submit": "dark"}) }}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-secondary" data-dismiss="modal" type="button">
-                                                    Close
-                                                </button>
-                                                <button class="btn btn-primary" type="button">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                                <div class="col-12">
+                                    <a class="btn btn-primary" href="{{ url_for('add_new_item') }}" type="button">Add
+                                        New todo item</a>
                                 </div>
+                            </form>
 
-                            </div>
-                        </form>
+                            <table class="table mb-4">
+                                <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Todo item</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set todo_item_number = namespace(value=1) %}
+                                {% for todo_item in current_user.todo_items: %}
+                                <tr>
+                                    <th scope="row">{{ todo_item_number.value }}</th>
+                                    <td>{{ todo_item.title }}</td>
+                                    {% if todo_item.is_completed: %}
+                                    <td>Done</td>
+                                    {% else: %}
+                                    <td>In progress</td>
+                                    {% endif %}
+                                    <td>
+                                        <a class="btn btn-danger" href="{{ url_for('delete_item', item_id=todo_item.id) }}"
+                                           type="submit">Delete</a>
+                                        <button class="btn btn-success ms-1" type="submit">Finished</button>
+                                    </td>
+                                </tr>
+                                {% set todo_item_number.value = todo_item_number.value + 1 %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
 
-                        <table class="table mb-4">
-                            <thead>
-                            <tr>
-                                <th scope="col">No.</th>
-                                <th scope="col">Todo item</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Buy groceries for next week</td>
-                                <td>In progress</td>
-                                <td>
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                    <button class="btn btn-success ms-1" type="submit">Finished</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Renew car insurance</td>
-                                <td>In progress</td>
-                                <td>
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                    <button class="btn btn-success ms-1" type="submit">Finished</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Sign up for online course</td>
-                                <td>In progress</td>
-                                <td>
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                    <button class="btn btn-success ms-1" type="submit">Finished</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
+                        </div>
                     </div>
                 </div>
             </div>

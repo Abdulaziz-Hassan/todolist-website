@@ -1,0 +1,4 @@
+#wrapper .container-fluid {
+        max-width: 100%;
+        display: block;
+}
