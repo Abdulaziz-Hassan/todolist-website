@@ -49,15 +49,15 @@ def home():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        # Email Validation
-        response = requests.get("https://isitarealemail.com/api/email/validate", params={"email": form.email.data})
-        status = response.json()["status"]
+        # # Email Validation
+        # response = requests.get("https://isitarealemail.com/api/email/validate", params={"email": form.email.data})
+        # status = response.json()["status"]
         if User.query.filter_by(email=form.email.data).first():
             flash("You,ve already signed up with that email, log in instead!")
             return redirect(url_for("login"))
-        elif not status == "valid":
-            flash("Please enter a valid email address.")
-            return redirect(url_for("register"))
+        # elif not status == "valid":
+        #     flash("Please enter a valid email address.")
+        #     return redirect(url_for("register"))
 
         hashed_password = generate_password_hash(
             form.password.data,
