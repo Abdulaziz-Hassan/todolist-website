@@ -16,3 +16,8 @@ class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Log In")
+
+
+class TODOItemForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    description = CKEditorField("Todo item description")
