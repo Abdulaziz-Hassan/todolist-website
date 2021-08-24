@@ -34,14 +34,47 @@
                                 {% for todo_item in current_user.todo_items: %}
                                 <tr>
                                     <th scope="row">{{ todo_item_number.value }}</th>
-                                    <td>{{ todo_item.title }}</td>
+                                    <td><!-- Button trigger modal -->
+                                        <a class="btn btn-primary" data-target="#{{ todo_item.id }}exampleModal"
+                                           data-toggle="modal"
+                                           type="button">
+                                            {{ todo_item.title }}
+                                        </a>
+                                        <!-- Modal -->
+                                        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
+                                             id="{{ todo_item.id }}exampleModal"
+                                             role="dialog" tabindex="-1">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title" id="exampleModalLabel">{{
+                                                            todo_item.title }}</h3>
+                                                        <button aria-label="Close" class="close" data-dismiss="modal"
+                                                                type="button">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h4>Description:</h4><br><h5>{{ todo_item.description|safe
+                                                        }}</h5>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" data-dismiss="modal"
+                                                                type="button">Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                     {% if todo_item.is_completed: %}
                                     <td>Done</td>
                                     {% else: %}
                                     <td>In progress</td>
                                     {% endif %}
                                     <td>
-                                        <a class="btn btn-danger" href="{{ url_for('delete_item', item_id=todo_item.id) }}"
+                                        <a class="btn btn-danger"
+                                           href="{{ url_for('delete_item', item_id=todo_item.id) }}"
                                            type="submit">Delete</a>
                                         <button class="btn btn-success ms-1" type="submit">Finished</button>
                                     </td>

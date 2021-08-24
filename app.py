@@ -39,7 +39,7 @@ def load_user(user_id):
 @app.route("/")
 def home():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return render_template("dashboard.html", current_user=current_user)
     return render_template("index.html")
 
 
@@ -63,7 +63,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return redirect(url_for('dashboard'))
+        return render_template("dashboard.html", current_user=current_user)
     return render_template("register.html", form=form, current_user=current_user)
 
 
@@ -82,7 +82,7 @@ def login():
             return redirect(url_for("login"))
         else:
             login_user(user)
-            return redirect(url_for("dashboard"))
+            return render_template("dashboard.html", current_user=current_user)
     return render_template("login.html", form=form, current_user=current_user)
 
 
@@ -93,7 +93,8 @@ def logout():
     return redirect(url_for("home"))
 
 
-@app.route("/dashboard/")
+@app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("dashboard.html", current_user=current_user)
 
@@ -112,16 +113,17 @@ def add_new_item():
         )
         db.session.add(new_item)
         db.session.commit()
-        return redirect(url_for("dashboard"))
+        return render_template("dashboard.html", current_user=current_user)
     return render_template("add-item.html", form=form, current_user=current_user)
 
 
 @app.route("/delete-item/<int:item_id>")
+@login_required
 def delete_item(item_id):
     item_to_delete = ToDoItem.query.get(item_id)
     db.session.delete(item_to_delete)
     db.session.commit()
-    return redirect(url_for("dashboard"))
+    return render_template("dashboard.html", current_user=current_user)
 
 
 if __name__ == '__main__':
