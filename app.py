@@ -22,7 +22,7 @@ Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # Database Connection
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///todolist.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todolist.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.app = app
 db.init_app(app)
