@@ -1,6 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, abort, flash, request, jsonify
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
-from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,8 +11,6 @@ import os
 
 app = Flask(__name__)
 
-# load_dotenv()
-
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get("RECAPTCHA_PUBLIC_KEY")
 app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get("RECAPTCHA_PRIVATE_KEY")
@@ -22,7 +19,7 @@ Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # Database Connection
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todolist.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///todolist.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.app = app
 db.init_app(app)
