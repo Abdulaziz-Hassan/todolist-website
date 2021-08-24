@@ -7,14 +7,13 @@ from dotenv import load_dotenv
 from database import db
 from models import User, ToDoItem
 from forms import RegisterForm, LoginForm, TODOItemForm
-import requests
 import os
 
 app = Flask(__name__)
 
 load_dotenv()
 
-app.config["SECRET_KEY"] = os.environ.get("APP_SECRET_KEY", "SECRET_KEY")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "APP_SECRET_KEY")
 app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get("RECAPTCHA_PUBLIC_KEY")
 app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 
@@ -22,9 +21,7 @@ Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # Database Connection
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ojotqrtdpdvqbp:ae321247c803e761aa6a5bb6e52224c36da89f4b8dae4608" \
-                                         "5b13bdf98ba31456@ec2-44-196-170-156.compute-1.amazonaws" \
-                                        ".com:5432/d88lrb575lmon8"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.app = app
 db.init_app(app)
