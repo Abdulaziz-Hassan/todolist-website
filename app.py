@@ -1,6 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, abort, flash, request, jsonify
 from flask_bootstrap import Bootstrap
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -26,12 +26,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.app = app
 db.init_app(app)
-db.create_all()
 
 # Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-# login_manager.login_view = "login"
+login_manager.login_view = "login"
 
 
 @login_manager.user_loader
@@ -50,16 +49,9 @@ def home():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        # # Email Validation
-        # response = requests.get("https://isitarealemail.com/api/email/validate", params={"email": form.email.data})
-        # status = response.json()["status"]
         if User.query.filter_by(email=form.email.data).first():
             flash("You,ve already signed up with that email, log in instead!")
             return redirect(url_for("login"))
-        # elif not status == "valid":
-        #     flash("Please enter a valid email address.")
-        #     return redirect(url_for("register"))
-
         hashed_password = generate_password_hash(
             form.password.data,
             method="pbkdf2:sha256",
@@ -120,7 +112,8 @@ def add_new_item():
         item_description = form.description.data
         new_item = ToDoItem(
             title=item_title,
-            description=item_description
+            description=item_description,
+            author=current_user
         )
         db.session.add(new_item)
         db.session.commit()
@@ -150,4 +143,5 @@ def complete_item(item_id):
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run(debug=True)

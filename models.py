@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
 
 
 class ToDoItem(db.Model):
-    __tablename__ = "items"
+    __tablename__ = "todo_items"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(75), nullable=False)
     description = db.Column(db.Text, nullable=True)
