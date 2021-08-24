@@ -119,8 +119,7 @@ def add_new_item():
         item_description = form.description.data
         new_item = ToDoItem(
             title=item_title,
-            description=item_description,
-            author=current_user
+            description=item_description
         )
         db.session.add(new_item)
         db.session.commit()
