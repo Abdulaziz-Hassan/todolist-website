@@ -126,6 +126,15 @@ def delete_item(item_id):
     return render_template("dashboard.html", current_user=current_user)
 
 
+@app.route("/complete-item/<int:item_id>")
+@login_required
+def complete_item(item_id):
+    completed_item = ToDoItem.query.get(item_id)
+    completed_item.is_completed = True
+    db.session.commit()
+    return render_template("dashboard.html", current_user=current_user)
+
+
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
