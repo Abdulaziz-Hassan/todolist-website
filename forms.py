@@ -22,3 +22,4 @@ class TODOItemForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     description = CKEditorField("Todo item description")
     submit = SubmitField("Add")
+    cancel = SubmitField("Cancel")

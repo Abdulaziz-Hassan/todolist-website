@@ -9,7 +9,7 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             {{ ckeditor.load() }}
             {{ ckeditor.config(name='description') }}
-            {{ wtf.quick_form(form, button_map={"submit": "dark btn-lg"}) }}
+            {{ wtf.quick_form(form, button_map={"submit": "dark btn-lg", "cancel": "danger btn-lg"}) }}
         </div>
     </div>
 </div>

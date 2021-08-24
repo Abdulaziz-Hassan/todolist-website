@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, abort, flash, request
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database import db
 from models import User, ToDoItem
 from forms import RegisterForm, LoginForm, TODOItemForm
+import requests
 import os
 
 app = Flask(__name__)
@@ -29,6 +30,7 @@ db.init_app(app)
 # Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
+# login_manager.login_view = "login"
 
 
 @login_manager.user_loader
@@ -47,9 +49,16 @@ def home():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+        # Email Validation
+        response = requests.get("https://isitarealemail.com/api/email/validate", params={"email": form.email.data})
+        status = response.json()["status"]
         if User.query.filter_by(email=form.email.data).first():
             flash("You,ve already signed up with that email, log in instead!")
             return redirect(url_for("login"))
+        elif not status == "valid":
+            flash("Please enter a valid email address.")
+            return redirect(url_for("register"))
+
         hashed_password = generate_password_hash(
             form.password.data,
             method="pbkdf2:sha256",
@@ -104,6 +113,8 @@ def dashboard():
 def add_new_item():
     form = TODOItemForm()
     if form.validate_on_submit():
+        if form.cancel.data:
+            return render_template("dashboard.html", current_user=current_user)
         item_title = form.title.data
         item_description = form.description.data
         new_item = ToDoItem(
@@ -113,23 +124,26 @@ def add_new_item():
         )
         db.session.add(new_item)
         db.session.commit()
-        return render_template("dashboard.html", current_user=current_user)
+        return redirect(url_for("dashboard", current_user=current_user))
     return render_template("add-item.html", form=form, current_user=current_user)
 
 
 @app.route("/delete-item/<int:item_id>")
 @login_required
 def delete_item(item_id):
-    item_to_delete = ToDoItem.query.get(item_id)
-    db.session.delete(item_to_delete)
-    db.session.commit()
+    item_to_delete = ToDoItem.query.get_or_404(item_id)
+    try:
+        db.session.delete(item_to_delete)
+        db.session.commit()
+    except:
+        pass
     return render_template("dashboard.html", current_user=current_user)
 
 
 @app.route("/complete-item/<int:item_id>")
 @login_required
 def complete_item(item_id):
-    completed_item = ToDoItem.query.get(item_id)
+    completed_item = ToDoItem.query.get_or_404(item_id)
     completed_item.is_completed = True
     db.session.commit()
     return render_template("dashboard.html", current_user=current_user)
