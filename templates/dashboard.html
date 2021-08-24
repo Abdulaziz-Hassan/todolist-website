@@ -37,7 +37,8 @@
                                     <th scope="row">{{ todo_item_number.value }}</th>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a class="btn btn-{{ 'success ms-1' if todo_item.is_completed else 'primary' }}" data-target="#{{ todo_item.id }}exampleModal"
+                                        <a class="btn btn-{{ 'success ms-1' if todo_item.is_completed else 'primary' }}"
+                                           data-target="#{{ todo_item.id }}exampleModal"
                                            data-toggle="modal"
                                            type="button">
                                             {{ todo_item.title }}
