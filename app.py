@@ -26,6 +26,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.app = app
 db.init_app(app)
+db.create_all()
 
 # Login Manager
 login_manager = LoginManager()
@@ -149,5 +150,4 @@ def complete_item(item_id):
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True)
