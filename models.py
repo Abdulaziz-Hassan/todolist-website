@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
 class ToDoItem(db.Model):
     __tablename__ = "todo_items"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(30), nullable=False)
+    title = db.Column(db.String(60), nullable=False)
     description = db.Column(db.Text, nullable=True)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     author = relationship("User", back_populates="todo_items")

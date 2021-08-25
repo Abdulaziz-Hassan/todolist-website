@@ -9,3 +9,10 @@
     padding-right: 5px;
   }
 }
+
+a.btn {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
