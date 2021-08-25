@@ -2,98 +2,103 @@
 
 {% include "header.html" %}
 {% block content %}
+<head>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="true" name="HandheldFriendly">
+</head>
 <link href="static/css/custom.css" rel="stylesheet">
 <body style="background-color: #2c3e50;">
 <section class="vh-100">
     <div id="wrapper">
-        <div class="container-fluid py-5 h-200 w-200">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-lg-9 col-xl-7">
-                    <div class="card rounded-3">
-                        <div class="card-body p-4">
+        <!--        <div class="container-fluid py-5 h-200 w-200">-->
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card rounded-3">
+                    <div class="card-body p-4">
 
-                            <h2 class="text-center my-3 pb-3">Todo list</h2>
+                        <h2 class="text-center my-3 pb-3">Todo list</h2>
 
-                            <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
-                                <div class="col-12">
-                                    <a class="btn btn-primary" href="{{ url_for('add_new_item') }}" type="button">Add
-                                        New todo item</a>
-                                </div>
-                            </form>
+                        <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                            <div class="col-12">
+                                <a class="btn btn-primary" href="{{ url_for('add_new_item') }}" type="button">Add
+                                    New todo item</a>
+                            </div>
+                        </form>
 
-                            <table class="table mb-4">
-                                <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Todo item</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% set todo_item_number = namespace(value=1) %}
-                                {% for todo_item in current_user.todo_items: %}
-                                <tr>
-                                    <th scope="row">{{ todo_item_number.value }}</th>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <a class="btn btn-{{ 'success ms-1' if todo_item.is_completed else 'primary' }}"
-                                           data-target="#{{ todo_item.id }}exampleModal"
-                                           data-toggle="modal"
-                                           type="button">
-                                            {{ todo_item.title }}
-                                        </a>
-                                        <!-- Modal -->
-                                        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
-                                             id="{{ todo_item.id }}exampleModal"
-                                             role="dialog" tabindex="-1">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h3 class="modal-title" id="exampleModalLabel">{{
-                                                            todo_item.title }}</h3>
-                                                        <button aria-label="Close" class="close" data-dismiss="modal"
-                                                                type="button">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h4>Description:</h4><br><h5>{{ todo_item.description|safe
-                                                        }}</h5>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-secondary" data-dismiss="modal"
-                                                                type="button">Close
-                                                        </button>
-                                                    </div>
+                        <table class="table mb-4">
+                            <thead>
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Todo item</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set todo_item_number = namespace(value=1) %}
+                            {% for todo_item in current_user.todo_items: %}
+                            <tr>
+                                <th scope="row">{{ todo_item_number.value }}</th>
+                                <td>
+                                    <!-- Button trigger modal -->
+                                    <a class="btn btn-{{ 'success ms-1' if todo_item.is_completed else 'primary' }}"
+                                       data-target="#{{ todo_item.id }}exampleModal"
+                                       data-toggle="modal"
+                                       type="button">
+                                        {{ todo_item.title }}
+                                    </a>
+                                    <!-- Modal -->
+                                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
+                                         id="{{ todo_item.id }}exampleModal"
+                                         role="dialog" tabindex="-1">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="exampleModalLabel">{{
+                                                        todo_item.title }}</h3>
+                                                    <button aria-label="Close" class="close" data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4>Description:</h4><br><h5>{{ todo_item.description|safe
+                                                    }}</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                                            type="button">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
-                                    {% if todo_item.is_completed: %}
-                                    <td>Done</td>
-                                    {% else: %}
-                                    <td>In progress</td>
-                                    {% endif %}
-                                    <td>
-                                        <a class="btn btn-danger"
-                                           href="{{ url_for('delete_item', item_id=todo_item.id) }}"
-                                           type="submit">Delete</a>
-                                        <a class="btn btn-success ms-1"
-                                           href="{{ url_for('complete_item', item_id=todo_item.id) }}"
-                                           type="submit">Completed</a>
-                                    </td>
-                                </tr>
-                                {% set todo_item_number.value = todo_item_number.value + 1 %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </div>
+                                </td>
+                                {% if todo_item.is_completed: %}
+                                <td>Done</td>
+                                {% else: %}
+                                <td>In progress</td>
+                                {% endif %}
+                                <td>
+                                    <a class="btn btn-danger"
+                                       href="{{ url_for('delete_item', item_id=todo_item.id) }}"
+                                       type="submit">Delete</a>
+                                    <a class="btn btn-success ms-1"
+                                       href="{{ url_for('complete_item', item_id=todo_item.id) }}"
+                                       type="submit">Completed</a>
+                                </td>
+                            </tr>
+                            {% set todo_item_number.value = todo_item_number.value + 1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--        </div>-->
     </div>
 </section>
 </body>

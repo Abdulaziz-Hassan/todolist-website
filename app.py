@@ -52,12 +52,16 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         # Email Validation
-        response = requests.get("https://isitarealemail.com/api/email/validate", params={"email": form.email.data})
-        status = response.json()["status"]
-        if User.query.filter_by(email=form.email.data).first():
+        response_lower = requests.get("https://isitarealemail.com/api/email/validate",
+                                      params={"email": form.email.data.lower()})
+        response_upper = requests.get("https://isitarealemail.com/api/email/validate",
+                                      params={"email": {form.email.data[0].upper() + form.email.data[1:]}})
+        status_lower = response_lower.json()["status"]
+        status_upper = response_upper.json()["status"]
+        if User.query.filter_by(email=form.email.data.lower()).first():
             flash("You,ve already signed up with that email, log in instead!")
             return redirect(url_for("login"))
-        elif not status == "valid":
+        elif not status_lower == "valid" and not status_upper == "valid":
             flash("Please enter a valid email address.")
             return redirect(url_for("register"))
         hashed_password = generate_password_hash(
@@ -66,7 +70,7 @@ def register():
             salt_length=8
         )
         new_user = User(
-            email=form.email.data,
+            email=form.email.data.lower(),
             name=form.name.data,
             password=hashed_password
         )
@@ -83,7 +87,7 @@ def login():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email.lower()).first()
         if not user:
             flash("That email does not exist, please try again.")
             return redirect(url_for("login"))
@@ -138,7 +142,7 @@ def delete_item(item_id):
         db.session.commit()
     except:
         pass
-    return render_template("dashboard.html", current_user=current_user)
+    return redirect(url_for("dashboard", current_user=current_user))
 
 
 @app.route("/complete-item/<int:item_id>")
