@@ -11,7 +11,6 @@ import requests
 import os
 
 app = Flask(__name__)
-# TODO dashboard mobile responsive
 
 load_dotenv()
 
