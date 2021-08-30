@@ -1,6 +1,6 @@
 # TodoList
 
-A simple todolist website made in Flask and deployed using Heroku on the following link (https://todo-list-t.herokuapp.com/)
+A simple todolist website made in Flask and deployed using Heroku on the following link (https://todo-list-t.herokuapp.com/).
 
 # Description
 
@@ -23,3 +23,5 @@ P.S. Passwords are hashed and salted immediately using [werkzeug](https://werkze
 6. [Bootstrap](https://getbootstrap.com/)
 7. [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/) (For templating)
 8. [Heroku](https://www.heroku.com/) (Website Deployment)
+
+Note: Original Template is from (https://templatemo.com/)
